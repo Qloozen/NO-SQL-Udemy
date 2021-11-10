@@ -1,17 +1,28 @@
 const assert = require('assert');
-const { describe } = require('mocha');
 const User = require('../src/user');
 
-describe('Reading users out of the database', () => {
+describe('Reading users out of the database', (done) => {
     let joe;
 
-    beforeEach(() => {
+    beforeEach((done) => {
         joe = new User({name: 'Joe'});
-        joe.save(done)
+        joe.save()
             .then(() => done())
     });
 
-    it('find all user with a name of joe', () => {
-        
+    it('find all user with a name of joe', (done) => {
+        User.find({name: 'Joe'})
+            .then((users) => {
+                assert(users[0]._id.toString() === joe._id.toString());
+                done();
+            });
+    });
+
+    it('find a user with a particular id', (done) => {
+        User.findOne({_id: joe._id})
+            .then((user) => {
+                assert(user.name === 'Joe');
+                done();
+            });
     });
 })
