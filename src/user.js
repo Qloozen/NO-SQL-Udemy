@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const PostSchema = require('./post');
 
 const UserSchema = new Schema({ // Regels waaraan het model moet voldoen
     name: { //Uitgebreidere opties/configuratie van een property
@@ -10,8 +11,13 @@ const UserSchema = new Schema({ // Regels waaraan het model moet voldoen
         },
         required: [true, 'Name is required']
     },
-    postCount: Number
-})
+    posts: [PostSchema],
+    likes: Number
+});
+
+UserSchema.virtual('postCount').get(function() {
+    return this.posts.length; // this keyword werkt niet met fat arrowfuncties, dan wordt de context van dit bestand aangeroepen
+});
 
 const User = mongoose.model('user', UserSchema, 'users'); // Model Object, vergelijkbaar met een DBset van C#
 
