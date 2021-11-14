@@ -12,13 +12,17 @@ const UserSchema = new Schema({ // Regels waaraan het model moet voldoen
         required: [true, 'Name is required']
     },
     posts: [PostSchema],
-    likes: Number
+    likes: Number,
+    blogPosts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'blogPost' // moet overeenkomen met de blogPost model name
+    }]
 });
 
 UserSchema.virtual('postCount').get(function() {
     return this.posts.length; // this keyword werkt niet met fat arrowfuncties, dan wordt de context van dit bestand aangeroepen
 });
 
-const User = mongoose.model('user', UserSchema, 'users'); // Model Object, vergelijkbaar met een DBset van C#
+const User = mongoose.model('user', UserSchema); // Model Object, vergelijkbaar met een DBset van C#
 
 module.exports = User; // De user model object exporteer je dan

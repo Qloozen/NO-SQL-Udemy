@@ -57,5 +57,5 @@ describe('Updating records', () => {
                 assert(user.likes == 10);
                 done()
             });
-    });
+    }); 
 });

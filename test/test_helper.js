@@ -15,7 +15,13 @@ before((done) => {// Connectie in hook omdat bij het falen van de connectie de t
 
 //Collectie leegmaken voor elke testcase
 beforeEach((done) => {
-    mongoose.connection.collections.users.drop(() => {
-        done();
+    //moet lowercase
+    const {users, comments, blogposts} = mongoose.connection.collections;
+    users.drop(() => {
+        comments.drop(() => {
+            blogposts.drop(() => {
+                done();
+            });
+        });
     });
 });
